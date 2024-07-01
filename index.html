@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Forme de Cartão</title>
+</head>
+<body>
+    <div class="container">
+        <!-- form do cartão -->
+        <form action="">
+            <div class="card-design">
+                <div class="front" id="front">
+                    <div class="images">
+                        <img src="./img/clipart.png" alt="imagem do chip do cartão">
+                        <h3>CARD</h3>
+                    </div>
+                    
+                    <span id="card-number-span">#### #### #### ####</span>
+
+                    <div class="flex-box">
+                        <span id="name-span">#####</span>
+                        <div class="vencimento-spans">
+                            <span id="mes-span">##</span>
+                            <span id="ano-span">####</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="back" id="back">
+                    <div class="listra"></div>
+                    <div class="cvv-box">
+                        <p>cvv</p>
+                        <input type="display" id="cvv-span" disabled>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content">
+                <label for="card-number">Número do cartão</label>
+                <input type="text" id="card-number" maxlength="19">
+            </div>
+            
+            <div class="content">
+                <label for="card-holder">Seu nome</label>
+                <input type="text" id="card-holder" maxlength="40">
+            </div>
+            
+            <div class="validade-container"><!--CONTAINER DE VALIDADE DO CARTÃO-->
+                <div class="content">
+                    <label for="">Mês</label>
+                    <select id="meses">
+                    <option value="" selected disabled></option>
+                    <option value="01">Fevereiro</option>
+                    <option value="02">Fevereiro</option>
+                    <option value="03">Março</option>
+                    <option value="04">Abril</option>
+                    <option value="05">Maio</option>
+                    <option value="06">Junho</option>
+                    <option value="07">Julho</option>
+                    <option value="08">Agosto</option>
+                    <option value="09">Setembro</option>
+                    <option value="10">Outubro</option>
+                    <option value="11">Novembro</option>
+                    <option value="12">Dezembro</option>
+                </select>
+                </div>
+
+                <div class="content">
+                    <label for="ano">Ano</label>
+                    <select name="" id="ano">
+                    <option value="" selected disabled></option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                    <option value="2027">2027</option>
+                    <option value="2028">2028</option>
+                    <option value="2029">2029</option>
+                    <option value="2030">2030</option>
+                </select>
+                </div>
+
+                <div class="content">
+                    <label for="card-cvv">Cvv</label>
+                    <input type="text" id="card-cvv" maxlength="3">
+                </div>
+            </div><!--FIM CONTAINER DE VALIDADE DO CARTÃO-->
+
+            <input type="submit" value="Enviar">
+        </form>
+        <!--fim form do cartão -->
+    </div>
+
+    <script>
+        //remover acentos do nome
+        function removeAcentos(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        }
+
+        // Função para formatar o número do cartão com espaços a cada 4 dígitos
+        function formatCardNumber(value) {
+            return value.replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, '$1 ');
+        }
+
+        document.querySelector("#card-number").oninput = () => {
+            let cardNumberInput = document.querySelector("#card-number");
+            cardNumberInput.value = formatCardNumber(cardNumberInput.value);
+            document.getElementById("card-number-span").innerText = cardNumberInput.value;
+        }
+
+        document.querySelector("#card-holder").oninput = () => {
+            const cardHolderValue = removeAcentos(document.querySelector("#card-holder").value);
+            document.getElementById("name-span").innerText = cardHolderValue;
+        }
+
+        document.querySelector("#meses").addEventListener("change", () => {
+            const selectedValue = document.querySelector("#meses").value;
+            document.getElementById("mes-span").innerText = selectedValue + " /";
+        });
+
+        document.querySelector("#ano").addEventListener("change", () => {
+            const selectedValue = document.querySelector("#ano").value;
+            document.getElementById("ano-span").innerText = selectedValue;
+        });
+
+        document.querySelector("#card-cvv").oninput = () => {
+            const cardCvvInput = document.querySelector("#card-cvv").value;
+            document.getElementById("cvv-span").value = cardCvvInput;
+        }
+
+        document.getElementById("card-cvv").onmouseenter = () =>{
+            document.getElementById("front").style.transform = "perspective(1000px) rotateY(-180deg)";
+            document.getElementById("back").style.transform = "perspective(1000px) rotateY(0deg)";
+        }
+        
+        document.getElementById("card-cvv").onmouseleave = () =>{
+            document.getElementById("front").style.transform = "perspective(1000px) rotateY(0deg)";
+            document.getElementById("back").style.transform = "perspective(1000px) rotateY(180deg)";
+        }
+    </script>
+
+</body>
+</html>
